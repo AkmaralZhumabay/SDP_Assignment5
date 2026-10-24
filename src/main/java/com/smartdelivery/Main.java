@@ -1,5 +1,6 @@
 package com.smartdelivery;
 
+import com.smartdelivery.comparison.StrategyComparison;
 import com.smartdelivery.selector.StrategySelector;
 import com.smartdelivery.model.*;
 import com.smartdelivery.planner.RoutePlanner;
@@ -96,6 +97,20 @@ public class Main {
 
         System.out.println("Request Priority: " + urgentRequest.priority());
         showResult(planner, routes, urgentRequest);
+
+        // Compare all strategies using the same request
+        System.out.println();
+
+        StrategyComparison comparison = new StrategyComparison(
+                List.of(
+                        new FastestRouteStrategy(),
+                        new CheapestRouteStrategy(),
+                        new EcoFriendlyRouteStrategy(),
+                        new BalancedRouteStrategy(0.4, 0.3, 0.1, 0.2)
+                )
+        );
+
+        comparison.compare(routes, request);
     }
 
     private static void showResult(RoutePlanner planner,
