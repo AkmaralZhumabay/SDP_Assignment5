@@ -1,6 +1,6 @@
 # Smart Delivery & Route Optimization Engine
 
-**Assignment 5 — Strategy Pattern**
+**Assignment 5 - Strategy Pattern**
 
 **Student:** Zhumabay Akmaral  
 **Group:** SE-2517  
@@ -17,11 +17,11 @@ The project demonstrates the **Strategy Design Pattern**, allowing route-selecti
 
 The system supports five strategies:
 
-- **FastestRouteStrategy** — selects the route with the shortest delivery time, including traffic delays.
-- **CheapestRouteStrategy** — selects the route with the lowest calculated delivery cost.
-- **EcoFriendlyRouteStrategy** — selects the route with the lowest environmental score.
-- **BalancedRouteStrategy** — selects a route using configurable weights for time, cost, distance, and emissions.
-- **DistanceFirstRouteStrategy** — selects the route with the shortest distance.
+- **FastestRouteStrategy** - selects the route with the shortest delivery time, including traffic delays.
+- **CheapestRouteStrategy** - selects the route with the lowest calculated delivery cost.
+- **EcoFriendlyRouteStrategy** - selects the route with the lowest environmental score.
+- **BalancedRouteStrategy** - selects a route using configurable weights for time, cost, distance, and emissions.
+- **DistanceFirstRouteStrategy** - selects the route with the shortest distance.
 
 The application also supports automatic strategy selection, route restrictions, comparison mode, explanations, and failure handling.
 
@@ -29,17 +29,17 @@ The application also supports automatic strategy selection, route restrictions, 
 
 The project uses three main components:
 
-**Context — RoutePlanner**
+**Context - RoutePlanner**
 
 `RoutePlanner` manages the current strategy, filters routes using hard constraints, and delegates route selection to the chosen strategy.
 
-**Strategy Interface — RouteStrategy**
+**Strategy Interface - RouteStrategy**
 
 `RouteStrategy` defines the common methods:
 
-- `selectRoute()` — selects the best route.
-- `getStrategyName()` — returns the strategy name.
-- `explain()` — explains the selected result.
+- `selectRoute()` - selects the best route.
+- `getStrategyName()` - returns the strategy name.
+- `explain()` - explains the selected result.
 
 **Concrete Strategies**
 
@@ -47,11 +47,11 @@ Each concrete strategy implements `RouteStrategy` and provides its own selection
 
 Additional components include:
 
-- `StrategySelector` — automatically chooses a strategy based on delivery priority and eco preference.
-- `RouteUtils` — calculates delivery time, total cost, and filters invalid routes.
-- `RouteDecision` — stores the selected route and explanation.
-- `StrategyComparison` — compares different strategies using the same delivery request.
-- `NoSuitableRouteException` — handles cases where no route satisfies the requirements.
+- `StrategySelector` - automatically chooses a strategy based on delivery priority and eco preference.
+- `RouteUtils` - calculates delivery time, total cost, and filters invalid routes.
+- `RouteDecision` - stores the selected route and explanation.
+- `StrategyComparison` - compares different strategies using the same delivery request.
+- `NoSuitableRouteException` - handles cases where no route satisfies the requirements.
 
 ## 3. Optimization Formulas
 
@@ -253,11 +253,11 @@ The Strategy Pattern allows the system to use different route-selection algorith
 
 The project contains five Concrete Strategies:
 
-- `FastestRouteStrategy` — minimum delivery time.
-- `CheapestRouteStrategy` — minimum total cost.
-- `EcoFriendlyRouteStrategy` — minimum environmental score.
-- `BalancedRouteStrategy` — weighted combination of four criteria.
-- `DistanceFirstRouteStrategy` — minimum distance.
+- `FastestRouteStrategy` - minimum delivery time.
+- `CheapestRouteStrategy` - minimum total cost.
+- `EcoFriendlyRouteStrategy` - minimum environmental score.
+- `BalancedRouteStrategy` - weighted combination of four criteria.
+- `DistanceFirstRouteStrategy` - minimum distance.
 
 All five implement `RouteStrategy`.
 
