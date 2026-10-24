@@ -5,6 +5,7 @@ import com.smartdelivery.selector.StrategySelector;
 import com.smartdelivery.model.*;
 import com.smartdelivery.planner.RoutePlanner;
 import com.smartdelivery.strategy.*;
+import com.smartdelivery.demo.FailureDemo;
 
 import java.util.List;
 
@@ -139,6 +140,9 @@ public class Main {
         for (String rejected : decision.rejectedRoutes()) {
             System.out.println("- " + rejected);
         }
+
+        // Demonstrate failure scenarios
+        FailureDemo.run(routes);
     }
 
     private static void showResult(RoutePlanner planner,
