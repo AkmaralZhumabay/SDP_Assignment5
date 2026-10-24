@@ -1,5 +1,6 @@
 package com.smartdelivery;
 
+import com.smartdelivery.selector.StrategySelector;
 import com.smartdelivery.model.*;
 import com.smartdelivery.planner.RoutePlanner;
 import com.smartdelivery.strategy.*;
@@ -74,6 +75,27 @@ public class Main {
                 new BalancedRouteStrategy(0.4, 0.3, 0.1, 0.2)
         );
         showResult(planner, routes, request);
+
+        // Automatic strategy selection
+        System.out.println();
+        System.out.println(" Automatic Strategy Selection ");
+
+        StrategySelector selector = new StrategySelector();
+
+        DeliveryRequest urgentRequest = new DeliveryRequest(
+                DeliveryPriority.URGENT,
+                10000,
+                60,
+                false
+        );
+
+        RouteStrategy selectedStrategy =
+                selector.selectStrategy(urgentRequest);
+
+        planner.setStrategy(selectedStrategy);
+
+        System.out.println("Request Priority: " + urgentRequest.priority());
+        showResult(planner, routes, urgentRequest);
     }
 
     private static void showResult(RoutePlanner planner,
