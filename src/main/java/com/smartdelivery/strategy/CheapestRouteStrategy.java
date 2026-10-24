@@ -2,7 +2,8 @@ package com.smartdelivery.strategy;
 
 import com.smartdelivery.model.Route;
 import com.smartdelivery.model.DeliveryRequest;
-import com.smartdelivery.model.DeliveryPriority;
+import com.smartdelivery.util.RouteUtils;
+
 import java.util.List;
 
 public class CheapestRouteStrategy implements RouteStrategy {
@@ -17,14 +18,7 @@ public class CheapestRouteStrategy implements RouteStrategy {
                 continue;
             }
 
-            double distanceCost = route.distanceKm() * 50;
-
-            double priorityFee = 0;
-            if (request.priority() == DeliveryPriority.URGENT) {
-                priorityFee = 1000;
-            }
-
-            double totalCost = route.cost() + distanceCost + priorityFee;
+            double totalCost = RouteUtils.calculateCost(route, request);
 
             if (totalCost < lowestCost) {
                 lowestCost = totalCost;

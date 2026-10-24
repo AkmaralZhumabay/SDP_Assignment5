@@ -1,5 +1,6 @@
 package com.smartdelivery.strategy;
 
+import com.smartdelivery.util.RouteUtils;
 import com.smartdelivery.model.Route;
 import com.smartdelivery.model.DeliveryRequest;
 import java.util.List;
@@ -55,7 +56,7 @@ public class BalancedRouteStrategy implements RouteStrategy {
             double totalTime = route.estimatedMinutes()
                     + route.trafficDelayMinutes();
 
-            double totalCost = calculateCost(route, request);
+            double totalCost = RouteUtils.calculateCost(route, request);
 
             maxTime = Math.max(maxTime, totalTime);
             maxCost = Math.max(maxCost, totalCost);
@@ -75,7 +76,7 @@ public class BalancedRouteStrategy implements RouteStrategy {
             double totalTime = route.estimatedMinutes()
                     + route.trafficDelayMinutes();
 
-            double totalCost = calculateCost(route, request);
+            double totalCost = RouteUtils.calculateCost(route, request);
 
             double normalizedTime = maxTime == 0 ? 0 : totalTime / maxTime;
             double normalizedCost = maxCost == 0 ? 0 : totalCost / maxCost;
@@ -96,16 +97,6 @@ public class BalancedRouteStrategy implements RouteStrategy {
         }
 
         return bestRoute;
-    }
-
-    private double calculateCost(Route route, DeliveryRequest request) {
-        double priorityFee = 0;
-
-        if (request.priority() == com.smartdelivery.model.DeliveryPriority.URGENT) {
-            priorityFee = 1000;
-        }
-
-        return route.cost() + route.distanceKm() * 50 + priorityFee;
     }
 
     @Override
