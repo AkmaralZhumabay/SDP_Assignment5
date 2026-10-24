@@ -1,0 +1,40 @@
+@startuml
+title Smart Delivery Engine - Sequence Diagram
+
+actor Client
+participant "StrategySelector" as Selector
+participant "RoutePlanner" as Planner
+participant "RouteUtils" as Utils
+participant "FastestRouteStrategy" as Fastest
+participant "RouteDecision" as Decision
+
+Client -> Selector : selectStrategy(urgentRequest)
+Selector --> Client : FastestRouteStrategy
+
+Client -> Planner : setStrategy(FastestRouteStrategy)
+Planner --> Client : done
+
+Client -> Planner : planWithExplanation(routes, urgentRequest)
+
+Planner -> Planner : plan(routes, urgentRequest)
+
+Planner -> Utils : getValidRoutes(routes, urgentRequest)
+Utils --> Planner : validRoutes
+
+Planner -> Fastest : selectRoute(validRoutes, urgentRequest)
+Fastest --> Planner : selectedRoute
+
+loop for each candidate route
+    Planner -> Utils : getRejectionReason(route, request)
+    Utils --> Planner : reason or null
+end
+
+Planner -> Fastest : explain(selectedRoute, urgentRequest)
+Fastest --> Planner : explanation
+
+Planner -> Decision : new RouteDecision(...)
+Decision --> Planner : decision
+
+Planner --> Client : RouteDecision
+
+@enduml

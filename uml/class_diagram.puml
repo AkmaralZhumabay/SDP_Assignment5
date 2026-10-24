@@ -1,0 +1,126 @@
+@startuml
+title Smart Delivery Engine - Class Diagram
+
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+package "model" {
+    class Location <<record>> {
+        +name: String
+        +latitude: double
+        +longitude: double
+    }
+
+    class Route <<record>> {
+        +id: String
+        +origin: Location
+        +destination: Location
+        +distanceKm: double
+        +estimatedMinutes: int
+        +cost: double
+        +carbonEmission: double
+        +trafficDelayMinutes: int
+        +available: boolean
+    }
+
+    class DeliveryRequest <<record>> {
+        +priority: DeliveryPriority
+        +maxBudget: double
+        +maxDeliveryMinutes: int
+        +ecoPreferred: boolean
+    }
+
+    enum DeliveryPriority {
+        URGENT
+        ECONOMY
+        ECO
+        STANDARD
+    }
+
+    class RouteDecision <<record>> {
+        +selectedRoute: Route
+        +strategyName: String
+        +explanation: String
+        +rejectedRoutes: List<String>
+    }
+}
+
+package "strategy" {
+    interface RouteStrategy {
+        +selectRoute(routes, request): Route
+        +getStrategyName(): String
+        +explain(route, request): String
+    }
+
+    class FastestRouteStrategy
+    class CheapestRouteStrategy
+    class EcoFriendlyRouteStrategy
+    class BalancedRouteStrategy {
+        -timeWeight: double
+        -costWeight: double
+        -distanceWeight: double
+        -emissionWeight: double
+    }
+    class DistanceFirstRouteStrategy
+}
+
+package "planner" {
+    class RoutePlanner {
+        -strategy: RouteStrategy
+        +setStrategy(strategy): void
+        +plan(routes, request): Route
+        +planWithExplanation(routes, request): RouteDecision
+        +getStrategyName(): String
+    }
+}
+
+package "selector" {
+    class StrategySelector {
+        -strategies: Map
+        +selectStrategy(request): RouteStrategy
+        +registerStrategy(priority, strategy): void
+    }
+}
+
+package "comparison" {
+    class StrategyComparison {
+        -strategies: List
+        +compare(routes, request): void
+    }
+}
+
+package "util" {
+    class RouteUtils {
+        +calculateTime(route): int
+        +calculateCost(route, request): double
+        +getValidRoutes(routes, request): List<Route>
+        +getRejectionReason(route, request): String
+    }
+}
+
+package "exception" {
+    class NoSuitableRouteException
+}
+
+RouteStrategy <|.. FastestRouteStrategy
+RouteStrategy <|.. CheapestRouteStrategy
+RouteStrategy <|.. EcoFriendlyRouteStrategy
+RouteStrategy <|.. BalancedRouteStrategy
+RouteStrategy <|.. DistanceFirstRouteStrategy
+
+RoutePlanner --> RouteStrategy : uses
+RoutePlanner ..> RouteUtils : filters routes
+RoutePlanner ..> RouteDecision : creates
+RoutePlanner ..> NoSuitableRouteException : throws
+
+StrategySelector --> RouteStrategy : selects
+StrategyComparison --> RoutePlanner : uses
+
+RouteStrategy ..> Route : selects
+RouteStrategy ..> DeliveryRequest : reads
+
+Route --> Location
+DeliveryRequest --> DeliveryPriority
+RouteDecision --> Route
+
+@enduml
