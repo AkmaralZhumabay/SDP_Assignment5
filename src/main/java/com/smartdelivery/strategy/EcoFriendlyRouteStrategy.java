@@ -32,4 +32,12 @@ public class EcoFriendlyRouteStrategy implements RouteStrategy {
     public String getStrategyName() {
         return "Eco-Friendly Route";
     }
+
+    @Override
+    public String explain(Route route, DeliveryRequest request) {
+        double score = route.carbonEmission() * 0.7
+                + route.distanceKm() * 0.3;
+
+        return "Lowest eco score: " + score;
+    }
 }

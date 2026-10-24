@@ -111,6 +111,33 @@ public class Main {
         );
 
         comparison.compare(routes, request);
+
+        // Strategy explanation
+        System.out.println();
+        System.out.println(" Strategy Explanation ");
+
+        DeliveryRequest limitedRequest = new DeliveryRequest(
+                DeliveryPriority.STANDARD,
+                3000,
+                45,
+                false
+        );
+
+        planner.setStrategy(new FastestRouteStrategy());
+
+        RouteDecision decision =
+                planner.planWithExplanation(routes, limitedRequest);
+
+        System.out.println("Strategy: " + decision.strategyName());
+        System.out.println("Selected: " + decision.selectedRoute().id());
+        System.out.println("Reason: " + decision.explanation());
+
+        System.out.println();
+        System.out.println("Rejected Routes:");
+
+        for (String rejected : decision.rejectedRoutes()) {
+            System.out.println("- " + rejected);
+        }
     }
 
     private static void showResult(RoutePlanner planner,

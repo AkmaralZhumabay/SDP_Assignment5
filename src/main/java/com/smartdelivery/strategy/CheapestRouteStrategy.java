@@ -33,4 +33,10 @@ public class CheapestRouteStrategy implements RouteStrategy {
     public String getStrategyName() {
         return "Cheapest Route";
     }
+
+    @Override
+    public String explain(Route route, DeliveryRequest request) {
+        return "Lowest total delivery cost: "
+                + RouteUtils.calculateCost(route, request) + " KZT";
+    }
 }

@@ -32,4 +32,13 @@ public class FastestRouteStrategy implements RouteStrategy {
     public String getStrategyName() {
         return "Fastest Route";
     }
+
+    @Override
+    public String explain(Route route, DeliveryRequest request) {
+        return "Estimated time: " + route.estimatedMinutes()
+                + " min, Traffic delay: +" + route.trafficDelayMinutes()
+                + " min, Total time: "
+                + (route.estimatedMinutes() + route.trafficDelayMinutes())
+                + " min";
+    }
 }

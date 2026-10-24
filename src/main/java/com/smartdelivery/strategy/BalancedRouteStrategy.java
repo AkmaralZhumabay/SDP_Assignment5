@@ -103,4 +103,9 @@ public class BalancedRouteStrategy implements RouteStrategy {
     public String getStrategyName() {
         return "Balanced Route";
     }
+
+    @Override
+    public String explain(Route route, DeliveryRequest request) {
+        return "Best weighted combination of time, cost, distance, and emissions";
+    }
 }

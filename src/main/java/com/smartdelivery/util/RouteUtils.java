@@ -51,4 +51,22 @@ public class RouteUtils {
 
         return validRoutes;
     }
+
+    public static String getRejectionReason(
+            Route route, DeliveryRequest request) {
+
+        if (!route.available()) {
+            return "Route unavailable";
+        }
+
+        if (calculateCost(route, request) > request.maxBudget()) {
+            return "Budget exceeded";
+        }
+
+        if (calculateTime(route) > request.maxDeliveryMinutes()) {
+            return "Delivery deadline exceeded";
+        }
+
+        return null;
+    }
 }
