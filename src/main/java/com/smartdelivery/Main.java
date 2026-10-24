@@ -106,7 +106,8 @@ public class Main {
                         new FastestRouteStrategy(),
                         new CheapestRouteStrategy(),
                         new EcoFriendlyRouteStrategy(),
-                        new BalancedRouteStrategy(0.4, 0.3, 0.1, 0.2)
+                        new BalancedRouteStrategy(0.4, 0.3, 0.1, 0.2),
+                        new DistanceFirstRouteStrategy()
                 )
         );
 
