@@ -11,6 +11,7 @@ public class BalancedRouteStrategy implements RouteStrategy {
     private final double costWeight;
     private final double distanceWeight;
     private final double emissionWeight;
+    private double lastScore;
 
     public BalancedRouteStrategy(double timeWeight, double costWeight,
                                  double distanceWeight, double emissionWeight) {
@@ -93,6 +94,7 @@ public class BalancedRouteStrategy implements RouteStrategy {
             if (score < lowestScore) {
                 lowestScore = score;
                 bestRoute = route;
+                lastScore = score;
             }
         }
 
@@ -106,6 +108,13 @@ public class BalancedRouteStrategy implements RouteStrategy {
 
     @Override
     public String explain(Route route, DeliveryRequest request) {
-        return "Best weighted combination of time, cost, distance, and emissions";
+        return String.format(
+                "Best weighted score: %.4f (Time: %.0f%%, Cost: %.0f%%, Distance: %.0f%%, Emissions: %.0f%%)",
+                lastScore,
+                timeWeight * 100,
+                costWeight * 100,
+                distanceWeight * 100,
+                emissionWeight * 100
+        );
     }
 }
