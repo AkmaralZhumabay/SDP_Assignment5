@@ -229,4 +229,26 @@ public class RoutePlannerTest {
         assertTrue(decision.rejectedRoutes()
                 .contains("E: Delivery deadline exceeded"));
     }
+
+    @Test
+    void negativeDistanceIsRejected() {
+        Location location = new Location("Test", 51.0, 71.0);
+
+        assertThrows(IllegalArgumentException.class, () ->
+                new Route("Invalid", location, location,
+                        -5, 20, 1000, 1.0, 0, true));
+    }
+
+    @Test
+    void negativeBudgetIsRejected() {
+        assertThrows(IllegalArgumentException.class, () ->
+                new DeliveryRequest(
+                        DeliveryPriority.STANDARD, -100, 60, false));
+    }
+
+    @Test
+    void missingPriorityIsRejected() {
+        assertThrows(IllegalArgumentException.class, () ->
+                new DeliveryRequest(null, 5000, 60, false));
+    }
 }
