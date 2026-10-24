@@ -235,7 +235,69 @@ The Eco-Friendly score uses a simple weighted formula rather than a detailed emi
 
 The Balanced strategy currently stores its last calculated score, which is suitable for the sequential demonstration but not ideal for concurrent use. A future improvement would return the route and score together in a result object.
 
-## 17. Conclusion
+## 17. Questions (Q&A)
+
+### 1. What problem does the Strategy Pattern solve in this project?
+
+The Strategy Pattern allows the system to use different route-selection algorithms without changing the main planning logic. It makes the application flexible and easier to maintain.
+
+### 2. Where is the Context?
+
+`RoutePlanner` is the Context. It stores the current strategy, filters routes using hard constraints, and delegates route selection to the selected algorithm.
+
+### 3. Where is the Strategy interface?
+
+`RouteStrategy` is the Strategy interface, located in the `strategy` package. It defines `selectRoute()`, `getStrategyName()`, and `explain()`.
+
+### 4. What are the Concrete Strategies?
+
+The project contains five Concrete Strategies:
+
+- `FastestRouteStrategy` — minimum delivery time.
+- `CheapestRouteStrategy` — minimum total cost.
+- `EcoFriendlyRouteStrategy` — minimum environmental score.
+- `BalancedRouteStrategy` — weighted combination of four criteria.
+- `DistanceFirstRouteStrategy` — minimum distance.
+
+All five implement `RouteStrategy`.
+
+### 5. Where is runtime strategy switching demonstrated?
+
+Runtime switching is demonstrated in `Main.java` using `planner.setStrategy()`.
+
+The same `RoutePlanner` object switches between Fastest, Cheapest, Eco-Friendly, and Balanced strategies while the program is running.
+
+### 6. Why use Strategy instead of simple if/else?
+
+With `if/else`, all selection algorithms could become mixed in one large method, making maintenance difficult.
+
+The Strategy Pattern separates each algorithm into its own class, allowing new algorithms to be added without changing `RoutePlanner`.
+
+### 7. How can a new Strategy be added?
+
+Create a new class that implements `RouteStrategy` and implement its required methods.
+
+For example, I added `DistanceFirstRouteStrategy` without modifying `RoutePlanner` or the existing strategies. The new strategy can then be registered or passed to the planner.
+
+### 8. What is the difference between Strategy and Bridge in the previous assignment?
+
+**Strategy** focuses on interchangeable algorithms. In this project, different strategies select delivery routes using different criteria.
+
+**Bridge** separates abstraction from implementation so both can change independently. In my previous Notification Gateway assignment, notification types were separated from sending channels such as Telegram, Email, and SMS.
+
+### 9. Which SOLID principles are demonstrated?
+
+- **SRP (Single Responsibility Principle):** Route planning, automatic strategy selection, and optimization algorithms have separate responsibilities.
+- **OCP (Open/Closed Principle):** New strategies can be added without modifying `RoutePlanner`.
+- **DIP (Dependency Inversion Principle):** `RoutePlanner` depends on the `RouteStrategy` interface instead of concrete classes.
+
+### 10. What limitation does the current architecture have?
+
+The application uses predefined routes instead of real-time traffic and map data.
+
+Additionally, the Balanced strategy stores its last calculated score, which is not ideal for concurrent use. A future improvement would return the selected route and score together in a result object.
+
+## 18. Conclusion
 
 This project demonstrates how the Strategy Pattern makes a delivery optimization system flexible and extensible.
 
