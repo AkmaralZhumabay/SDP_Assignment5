@@ -251,4 +251,26 @@ public class RoutePlannerTest {
         assertThrows(IllegalArgumentException.class, () ->
                 new DeliveryRequest(null, 5000, 60, false));
     }
+
+    @Test
+    void ecoPreferenceSelectsEcoStrategy() {
+        StrategySelector selector = new StrategySelector();
+
+        DeliveryRequest request = new DeliveryRequest(
+                DeliveryPriority.STANDARD, 10000, 60, true);
+
+        assertInstanceOf(EcoFriendlyRouteStrategy.class,
+                selector.selectStrategy(request));
+    }
+
+    @Test
+    void urgentPriorityOverridesEcoPreference() {
+        StrategySelector selector = new StrategySelector();
+
+        DeliveryRequest request = new DeliveryRequest(
+                DeliveryPriority.URGENT, 10000, 60, true);
+
+        assertInstanceOf(FastestRouteStrategy.class,
+                selector.selectStrategy(request));
+    }
 }

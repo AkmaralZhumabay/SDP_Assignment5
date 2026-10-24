@@ -30,6 +30,16 @@ public class StrategySelector {
     public RouteStrategy selectStrategy(DeliveryRequest request) {
         Objects.requireNonNull(request, "Delivery request cannot be null");
 
+        // Urgent deliveries always prioritize speed
+        if (request.priority() == DeliveryPriority.URGENT) {
+            return strategies.get(DeliveryPriority.URGENT);
+        }
+
+        // Eco preference applies to non-urgent deliveries
+        if (request.ecoPreferred()) {
+            return strategies.get(DeliveryPriority.ECO);
+        }
+
         RouteStrategy strategy = strategies.get(request.priority());
 
         if (strategy == null) {
